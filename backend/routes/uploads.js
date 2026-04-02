@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // upload excel
-router.post('/upload', auth, upload.single('file'), async (req, res) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     const filePath = req.file.path;
     const wb = XLSX.readFile(filePath);
@@ -22,7 +22,7 @@ router.post('/upload', auth, upload.single('file'), async (req, res) => {
     const json = XLSX.utils.sheet_to_json(sheet, { defval: null });
 
     const doc = new Upload({
-      user: req.user.id,
+      user: 'guest',
       originalName: req.file.originalname,
       filename: req.file.filename,
       path: filePath,

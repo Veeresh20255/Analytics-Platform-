@@ -19,9 +19,7 @@ export const login = (data) => API.post('/auth/login', data).then(r => {
 });
 
 export const uploadFile = (formData) => {
-  const token = localStorage.getItem('token');
-  console.log('Token before upload:', token);
-  return API.post('/uploads/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data);
+  return API.post('/uploads/upload', formData).then(r => r.data);
 };
 
 export const getHistory = () => API.get('/uploads/history').then(r => r.data);

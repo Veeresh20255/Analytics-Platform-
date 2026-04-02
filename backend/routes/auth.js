@@ -11,8 +11,8 @@ const { validatePasswordStrength } = require('../utils/passwordValidator');
 
 // Helper: Generate both access and refresh tokens
 function generateTokens(userId) {
-  const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET);
-  const refreshToken = jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET);
+  const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const refreshToken = jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET, { expiresIn: '7d' });
   return { accessToken, refreshToken };
 }
 

@@ -1,4 +1,5 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
@@ -6,14 +7,18 @@ const authRoutes = require('./routes/auth');
 const uploadRoutes = require('./routes/uploads');
 const adminRoutes = require('./routes/admin');
 const aiRoutes = require('./routes/ai');
-const path = require('path');
 const fs = require('fs');
 
 const app = express();
 connectDB();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Set Content-Type header
 app.use((req, res, next) => {
