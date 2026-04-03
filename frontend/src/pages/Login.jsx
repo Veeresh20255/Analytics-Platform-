@@ -14,14 +14,18 @@ export default function Login({ onLogin }) {
     setError('');
     try {
       const res = await login({ email, password });
-      localStorage.setItem('token', res.token);
+      localStorage.setItem('token', res.accessToken);
       localStorage.setItem('user', JSON.stringify(res.user));
       onLogin && onLogin(res.user);
 
       // ✅ Navigate to dashboard (not landing page)
       nav('/dashboard');
     } catch (err) {
-      setError(err?.response?.data?.message || err.message);
+      let errorMsg = err?.response?.data?.message || err.message;
+      if (err?.response?.status === 429) {
+        errorMsg = 'Invalid login attempt. Please try again later.';
+      }
+      setError(errorMsg);
     }
   };
 

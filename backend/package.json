@@ -22,5 +22,8 @@
     "multer": "^2.0.2",
     "sheetjs-style": "^0.15.8",
     "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "baseline-browser-mapping": "^2.10.13"
   }
 }
