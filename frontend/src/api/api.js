@@ -14,7 +14,6 @@ API.interceptors.request.use((config) => {
 export const register = (data) => API.post('/auth/register', data).then(r => r.data);
 export const login = (data) => API.post('/auth/login', data).then(r => {
   console.log('Login response:', r.data);
-  localStorage.setItem('token', r.data.accessToken);
   return r.data;
 });
 

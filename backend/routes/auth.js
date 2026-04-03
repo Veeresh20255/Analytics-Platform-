@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const RefreshToken = require('../models/RefreshToken');
 const TokenBlacklist = require('../models/TokenBlacklist');
-const auth = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 const { loginLimiter, registerLimiter, passwordResetLimiter } = require('../middleware/rateLimiter');
 const { validatePasswordStrength } = require('../utils/passwordValidator');
 
@@ -16,11 +16,25 @@ function generateTokens(userId) {
   return { accessToken, refreshToken };
 }
 
+// List of common disposable email domains
+const disposableDomains = [
+  '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'temp-mail.org', 'throwaway.email',
+  'yopmail.com', 'maildrop.cc', 'tempail.com', 'dispostable.com', 'minitts.net', // added minitts.net
+  '0-mail.com', 'anonbox.net', 'binkmail.com', 'deadaddress.com', 'emailondeck.com',
+  'fakeinbox.com', 'getnada.com', 'mailcatch.com', 'spamgourmet.com', 'tempinbox.com'
+];
+
 // register
 router.post('/register', registerLimiter, async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ message: 'Email and password required' });
+    if (!name || !email || !password) return res.status(400).json({ message: 'Name, email and password required' });
+
+    // Check for disposable email
+    const domain = email.split('@')[1];
+    if (disposableDomains.includes(domain)) {
+      return res.status(400).json({ message: 'Disposable emails are not allowed. Please use a permanent email address.' });
+    }
 
     // Validate password strength
     const validation = validatePasswordStrength(password);

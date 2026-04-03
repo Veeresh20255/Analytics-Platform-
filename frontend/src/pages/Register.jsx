@@ -15,7 +15,7 @@ export default function Register({ onRegister }) {
       const res = await register({ name, email, password });
 
       // ✅ Save user and token
-      localStorage.setItem('token', res.token);
+      localStorage.setItem('token', res.accessToken);
       localStorage.setItem('user', JSON.stringify(res.user));
 
       // ✅ Update state in App
@@ -24,7 +24,11 @@ export default function Register({ onRegister }) {
       // ✅ Go directly to dashboard (not landing page)
       nav('/dashboard');
     } catch (err) {
-      alert(err?.response?.data?.message || err.message);
+      let errorMsg = err?.response?.data?.message || err.message;
+      if (err?.response?.status === 429) {
+        errorMsg = 'Invalid email. Please check your email address and try again.';
+      }
+      alert(errorMsg);
     }
   };
 
@@ -39,6 +43,7 @@ export default function Register({ onRegister }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
+            required
           />
           <input
             type="email"
