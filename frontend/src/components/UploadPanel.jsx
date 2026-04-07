@@ -26,7 +26,7 @@ export default function UploadPanel({ onUploaded }){
   return (
     <div className="upload-panel">
       <form onSubmit={submit}>
-        <input type="file" accept=".xls,.xlsx" onChange={e=>setFile(e.target.files[0])} />
+        <input type="file" accept=".xls,.xlsx, .csv" onChange={e=>setFile(e.target.files[0])} />
         <button type="submit" disabled={loading}>{loading ? 'Uploading...' : 'Upload Excel'}</button>
       </form>
     </div>

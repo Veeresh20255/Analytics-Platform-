@@ -72,8 +72,6 @@ router.get('/uploads', auth, admin, async (req, res) => {
   }
 });
 
-module.exports = router;
-
 // Admin-only route to list available generative AI models (for debugging)
 router.get('/ai-models', auth, admin, async (req, res) => {
   try {
