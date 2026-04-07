@@ -1,75 +1,128 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { login } from '../api/api';
 import { useNavigate, Link } from 'react-router-dom';
-import "../Stylesheets/index.css";
+import '../Stylesheets/index.css';
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const submit = async (event) => {
+    event.preventDefault();
     setError('');
+    setLoading(true);
     try {
       const res = await login({ email, password });
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(res.user));
+      if (remember) {
+        localStorage.setItem('rememberedEmail', email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
       onLogin && onLogin(res.user);
-
-      // ✅ Navigate to dashboard (not landing page)
       nav('/dashboard');
     } catch (err) {
       setError(err?.response?.data?.message || err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // 👇 Auto-hide error after 5s
   useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => setError(''), 5000);
-      return () => clearTimeout(timer);
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRemember(true);
     }
-  }, [error]);
+  }, []);
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <h2>Login</h2>
-
-        {/* 👇 Error Message */}
-        {error && (
-          <div className="error-msg">
-            {error}
+    <div className="auth-shell">
+      <div className="auth-frame">
+        <header className="auth-topbar">
+          <div className="auth-brand">
+            <span className="auth-brand-dot" aria-hidden="true">◉</span>
+            <span className="auth-brand-name">Secondbrain</span>
+            <span className="auth-brand-sub">/ TID</span>
           </div>
-        )}
-        
-        <form onSubmit={submit}>
-          <input
-            type='email'
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
-          <input
-            value={password}
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="Password"
-            required
-          />
-          <button type="submit" className="btn">Login</button>
-        </form>
 
-        {/* 👇 Register option */}
-        <p className="auth-switch">
-          Don’t have an account?{" "}
-          <Link to="/register">Register here</Link>
-        </p>
+          <nav className="auth-nav" aria-label="Auth navigation">
+            <button type="button" onClick={() => nav('/')}>Home</button>
+            <button type="button" onClick={() => nav('/')}>Features</button>
+            <button type="button" onClick={() => nav('/')}>Pricing</button>
+            <button type="button" className="auth-nav-btn" onClick={() => nav('/login')}>Sign In</button>
+          </nav>
+        </header>
+
+        <section className="auth-stage">
+          <div className="auth-card">
+            <h2>Welcome Back</h2>
+            <p className="auth-subtitle">Sign in to continue to your account</p>
+
+            {error && <div className="auth-error">{error}</div>}
+
+            <form onSubmit={submit} className="auth-form">
+              <label>
+                <span>Email</span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email address"
+                  required
+                />
+              </label>
+
+              <label>
+                <span>Password</span>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                />
+              </label>
+
+              <div className="auth-row">
+                <label className="auth-check">
+                  <input
+                    type="checkbox"
+                    checked={remember}
+                    onChange={(e) => setRemember(e.target.checked)}
+                  />
+                  Remember me
+                </label>
+                <button type="button" className="auth-link-btn">Forgot password?</button>
+              </div>
+
+              <button type="submit" className="auth-submit" disabled={loading}>
+                {loading ? 'Signing In...' : 'Sign In'}
+              </button>
+            </form>
+
+            <p className="auth-switch-line">
+              Do not have an account? <Link to="/register">Sign Up</Link>
+            </p>
+
+            <div className="auth-divider">
+              <span>Or continue with</span>
+            </div>
+
+            <div className="auth-socials" aria-label="Social login options">
+              <button type="button">G</button>
+              <button type="button">M</button>
+              <button type="button">in</button>
+            </div>
+          </div>
+
+          <p className="auth-footer">(C) 2023 Secondbrain. All rights reserved</p>
+        </section>
       </div>
     </div>
   );
