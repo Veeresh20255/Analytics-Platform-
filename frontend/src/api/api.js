@@ -1,30 +1,53 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+const BASE_URL = "http://localhost:5000/api";
+
+// Helper to attach token
+const authHeader = () => ({
+  headers: { Authorization: "Bearer " + localStorage.getItem("token") }
 });
 
-// ✅ Automatically attach token from localStorage for every request
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
-
-export const register = (data) => API.post('/auth/register', data).then(r => r.data);
-export const login = (data) => API.post('/auth/login', data).then(r => {
-  console.log('Login response:', r.data);
-  return r.data;
-});
-
-export const uploadFile = (formData) => {
-  return API.post('/uploads/upload', formData).then(r => r.data);
+// ---------------- AUTH ----------------
+export const login = async ({ email, password }) => {
+  const res = await axios.post(`${BASE_URL}/auth/login`, { email, password });
+  return res.data;
 };
 
-export const getHistory = () => API.get('/uploads/history').then(r => r.data);
-export const getAllUploads = () => API.get('/uploads/all').then(r => r.data);
+export const register = async ({ name, email, password }) => {
+  const res = await axios.post(`${BASE_URL}/auth/register`, { name, email, password });
+  return res.data;
+};
 
-export const updateUser = (userData) => API.put('/auth/profile', userData).then(r => r.data);
-export const changePassword = (passwords) => API.post('/auth/change-password', passwords).then(r => r.data);
+// ---------------- UPLOAD ----------------
+export const uploadFile = async (formData) => {
+  const res = await axios.post(`${BASE_URL}/uploads/upload`, formData, authHeader());
+  return res.data;
+};
 
-export const generateInsights = (id) => API.post(`/ai/generate-insights/${id}`).then(r => r.data);
+export const getHistory = async () => {
+  const res = await axios.get(`${BASE_URL}/uploads/history`, authHeader());
+  return res.data;
+};
+
+// ---------------- DASHBOARDS ----------------
+export const saveDashboard = async (data) => {
+  const res = await axios.post(`${BASE_URL}/dashboards/save`, data, authHeader());
+  return res.data;
+};
+
+export const getDashboards = async () => {
+  const res = await axios.get(`${BASE_URL}/dashboards`, authHeader());
+  return res.data;
+};
+
+// ---------------- ADMIN ----------------
+export const getAllUploads = async () => {
+  const res = await axios.get(`${BASE_URL}/uploads/all`, authHeader());
+  return res.data;
+};
+
+// ---------------- AI INSIGHTS ----------------
+export const generateInsights = async (id) => {
+  const res = await axios.post(`${BASE_URL}/insights/generate-insights/${id}`, {}, authHeader());
+  return res.data;
+};

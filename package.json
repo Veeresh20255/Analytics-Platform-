@@ -1,0 +1,30 @@
+{
+  "name": "excel-analytics-platform",
+  "version": "1.0.0",
+  "description": "A full-stack application for Excel data analytics with AI-powered insights.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Veeresh20255/Analytics-Platform-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Veeresh20255/Analytics-Platform-/issues"
+  },
+  "homepage": "https://github.com/Veeresh20255/Analytics-Platform-#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "fs": "^0.0.1-security",
+    "multer": "^2.1.1",
+    "papaparse": "^5.5.3",
+    "react-beautiful-dnd": "^13.1.1",
+    "xlsx": "^0.18.5"
+  }
+}
