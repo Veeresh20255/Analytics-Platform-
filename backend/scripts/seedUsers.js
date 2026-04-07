@@ -35,6 +35,23 @@ async function seed() {
       console.log(`User already exists: ${userEmail}`);
     }
 
+    // Create additional test users with generated emails
+    for (let i = 2; i <= 5; i++) {
+      const genEmail = `user${i}@example.com`;
+      const genPassword = `UserPass${i}23!`;
+      const genName = `Test User ${i}`;
+
+      const exists = await User.findOne({ email: genEmail });
+      if (!exists) {
+        const hashed = await bcrypt.hash(genPassword, 10);
+        const user = new User({ name: genName, email: genEmail, password: hashed, role: 'user' });
+        await user.save();
+        console.log(`Created user: ${genEmail} / ${genPassword}`);
+      } else {
+        console.log(`User already exists: ${genEmail}`);
+      }
+    }
+
     await mongoose.disconnect();
     console.log('Done');
   } catch (err) {
