@@ -52,9 +52,9 @@ export default function Register({ onRegister }) {
           </div>
 
           <nav className="auth-nav" aria-label="Auth navigation">
-            <button type="button" onClick={() => nav('/')}>Home</button>
-            <button type="button" onClick={() => nav('/')}>Features</button>
-            <button type="button" onClick={() => nav('/')}>Pricing</button>
+            <button type="button" onClick={() => nav('/#hero')}>Home</button>
+            <button type="button" onClick={() => nav('/#features')}>Features</button>
+            <button type="button" onClick={() => nav('/#pricing')}>Pricing</button>
             <button type="button" className="auth-nav-btn" onClick={() => nav('/register')}>Sign Up</button>
           </nav>
         </header>

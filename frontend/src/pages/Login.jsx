@@ -52,9 +52,9 @@ export default function Login({ onLogin }) {
           </div>
 
           <nav className="auth-nav" aria-label="Auth navigation">
-            <button type="button" onClick={() => nav('/')}>Home</button>
-            <button type="button" onClick={() => nav('/')}>Features</button>
-            <button type="button" onClick={() => nav('/')}>Pricing</button>
+            <button type="button" onClick={() => nav('/#hero')}>Home</button>
+            <button type="button" onClick={() => nav('/#features')}>Features</button>
+            <button type="button" onClick={() => nav('/#pricing')}>Pricing</button>
             <button type="button" className="auth-nav-btn" onClick={() => nav('/login')}>Sign In</button>
           </nav>
         </header>
@@ -98,7 +98,7 @@ export default function Login({ onLogin }) {
                   />
                   Remember me
                 </label>
-                <button type="button" className="auth-link-btn">Forgot password?</button>
+                <button type="button" className="auth-link-btn" onClick={() => nav('/help')}>Forgot password?</button>
               </div>
 
               <button type="submit" className="auth-submit" disabled={loading}>
@@ -115,9 +115,9 @@ export default function Login({ onLogin }) {
             </div>
 
             <div className="auth-socials" aria-label="Social login options">
-              <button type="button">G</button>
-              <button type="button">M</button>
-              <button type="button">in</button>
+              <button type="button" onClick={() => setError('Google login is not configured yet.')}>G</button>
+              <button type="button" onClick={() => setError('Microsoft login is not configured yet.')}>M</button>
+              <button type="button" onClick={() => setError('LinkedIn login is not configured yet.')}>in</button>
             </div>
           </div>
 
