@@ -1,9 +1,32 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../Stylesheets/landing.css';
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const id = location.hash.replace('#', '');
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [location.hash]);
+
+  const goToSection = (sectionId) => {
+    if (window.location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+
+    navigate(`/#${sectionId}`);
+  };
 
   return (
     <div className="landing-shell">
@@ -16,16 +39,16 @@ export default function LandingPage() {
           </div>
 
           <nav className="landing-nav" aria-label="Main navigation">
-            <button type="button">Home</button>
-            <button type="button">Features</button>
-            <button type="button">Pricing</button>
+            <button type="button" onClick={() => goToSection('hero')}>Home</button>
+            <button type="button" onClick={() => goToSection('features')}>Features</button>
+            <button type="button" onClick={() => goToSection('pricing')}>Pricing</button>
             <button type="button" className="landing-sign-btn" onClick={() => navigate('/register')}>
               Sign Here
             </button>
           </nav>
         </header>
 
-        <section className="landing-hero">
+        <section className="landing-hero" id="hero">
           <div className="landing-hero-copy">
             <h1>
               Unlock Insights from
@@ -64,7 +87,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="landing-features">
+        <section className="landing-features" id="features">
           <h2>Upload & Analyze Data</h2>
           <p>
             Upload your Excel or CSV files to analyze, visualize, and gain insights
@@ -98,6 +121,31 @@ export default function LandingPage() {
             <span>sheet</span>
             <span>drive</span>
             <span>cloud</span>
+          </div>
+        </section>
+
+        <section className="landing-features" id="pricing">
+          <h2>Simple Pricing</h2>
+          <p>Start free, then scale when your team needs more charts, reports, and collaboration.</p>
+
+          <div className="landing-feature-grid">
+            <article className="landing-feature-card">
+              <div className="feature-icon-box">starter</div>
+              <h3>Starter</h3>
+              <p>Upload files, build charts, and save a few dashboards.</p>
+            </article>
+
+            <article className="landing-feature-card">
+              <div className="feature-icon-box">team</div>
+              <h3>Team</h3>
+              <p>Add collaboration, shared reports, and alert workflows.</p>
+            </article>
+
+            <article className="landing-feature-card">
+              <div className="feature-icon-box">pro</div>
+              <h3>Pro</h3>
+              <p>Unlock full automation, exports, and analytics depth.</p>
+            </article>
           </div>
         </section>
       </div>

@@ -40,6 +40,11 @@ export const getDashboards = async () => {
   return res.data;
 };
 
+export const deleteDashboard = async (id) => {
+  const res = await axios.delete(`${BASE_URL}/dashboards/${id}`, authHeader());
+  return res.data;
+};
+
 // ---------------- ADMIN ----------------
 export const getAllUploads = async () => {
   const res = await axios.get(`${BASE_URL}/uploads/all`, authHeader());

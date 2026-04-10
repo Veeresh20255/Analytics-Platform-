@@ -130,45 +130,63 @@ nav button:hover {
 
 /* 🌟 Modern Upload Panel */
 .upload-panel {
-  background: var(--bg-card);
-  padding: 24px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-  transition: var(--transition);
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8eef5;
+  transition: all 0.3s ease;
 }
 
 .upload-panel:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
 }
 
+.upload-panel form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .upload-panel input[type="file"] {
-  width: 90%;
-  padding: 16px;
-  border: 2px dashed var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg-primary);
-  transition: var(--transition);
-  margin-bottom: 16px;
+  width: 100%;
+  padding: 1.25rem;
+  border: 2px dashed #cbd5e0;
+  border-radius: 10px;
+  background: #f7fafc;
+  transition: all 0.2s ease;
   font-size: 0.9rem;
+  color: #4a5568;
+  font-weight: 500;
+  cursor: pointer;
+  appearance: none;
+}
+
+.upload-panel input[type="file"]::-webkit-file-upload-button {
+  display: none;
+}
+
+.upload-panel input[type="file"]::file-selector-button {
+  display: none;
 }
 
 .upload-panel input[type="file"]:hover {
-  border-color: var(--primary-light);
-  background: rgba(67, 97, 238, 0.02);
+  border-color: #a0aec0;
+  background: #edf2f7;
 }
 
 .upload-panel input[type="file"]:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+  border-color: #1abc9c;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
 }
 
 .upload-panel button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  background: #1abc9c;
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -176,17 +194,17 @@ nav button:hover {
   font-size: 0.95rem;
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
 }
 
 .upload-panel button:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-  box-shadow: var(--shadow-md);
+  background: #16a085;
+  box-shadow: 0 4px 12px rgba(26, 188, 156, 0.3);
   transform: translateY(-1px);
 }
 
 .upload-panel button:disabled {
-  background: var(--text-light);
+  background: #cbd5e0;
   cursor: not-allowed;
   transform: none;
 }
